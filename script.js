@@ -30,6 +30,7 @@ function setTodos(todos) {
 function createTodoItem(todoText) {
   const li = document.createElement('li');
   li.className = 'p-2 border-b border-gray-200 transition-all duration-200 cursor-pointer hover:bg-gray-600 ease-in-out';
+  li.draggable = true;
 
   // Create a item
   const checkbox = document.createElement('input');
@@ -46,6 +47,12 @@ function createTodoItem(todoText) {
     if (this.checked) {
       li.classList.add('line-through', 'text-gray-400'); 
       clearButton.style.display = 'block';
+    } else {
+      li.classList.remove('line-through', 'text-gray-400');
+      // Hide the clear button if no items are checked
+      if (!Array.from(document.getElementById('todoList').children).some(item => item.firstChild.firstChild.checked)) {
+        clearButton.style.display = 'none';
+      }
     }
   });
 
@@ -92,13 +99,13 @@ document.getElementById('clearCompleted').addEventListener('click', async functi
   
   // Remove completed items
   for (let i = todoItems.length - 1; i >= 0; i--) {
-    if (todoItems[i].classList.contains('line-through')) {
-      todoItems[i].remove();
-
+    if (todoItems[i].firstChild.firstChild.checked) {
       // Remove the todo
       let todos = await getTodos();
       todos.splice(i, 1);
       await setTodos(todos);
+  
+      todoItems[i].remove();
     }
   }
 
@@ -159,3 +166,29 @@ document.getElementById('clearCompleted').addEventListener('click', async functi
       }, 400);
     }, 4000);
   }
+
+let draggedItem = null;
+
+document.getElementById('todoList').addEventListener('dragstart', function(e) {
+  draggedItem = e.target;
+});
+
+document.getElementById('todoList').addEventListener('dragover', function(e) {
+  e.preventDefault();
+  const closest = Array.from(e.currentTarget.children).reduce((acc, curr) => {
+    const box = curr.getBoundingClientRect();
+    const offset = e.clientY - box.top - box.height / 2;
+    if (offset < 0 && offset > acc.offset) {
+      return { offset: offset, element: curr };
+    } else {
+      return acc;
+    }
+  }, { offset: Number.NEGATIVE_INFINITY }).element;
+  if (closest && draggedItem !== closest) {
+    e.currentTarget.insertBefore(draggedItem, closest);
+  }
+});
+
+document.getElementById('todoList').addEventListener('dragend', function(e) {
+  draggedItem = null;
+});
