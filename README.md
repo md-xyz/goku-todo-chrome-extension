@@ -2,7 +2,7 @@
 
 ## Description
 
-This project is a simple test todo list chrome extension using just html, css (+Tailwind), and js. It allows users to add, mark as complete, and delete tasks. It also has a fun feature where a random Goku gif from Giphy is displayed when all tasks are completed. This currently does not use storage or anything and was just a test to make a chrome extension. 
+This project is a simple test todo list chrome extension using just html, css (+Tailwind), and js. It allows users to add, mark as complete, and delete tasks. It also has a fun feature where a random Goku gif from Giphy is displayed when all tasks are completed. Modified to use chrome storage api.
 
 ## Installation
 
