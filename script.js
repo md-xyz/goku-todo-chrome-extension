@@ -29,14 +29,14 @@ function setTodos(todos) {
 
 function createTodoItem(todoText) {
   const li = document.createElement('li');
-  li.className = 'p-2 border-b border-gray-200 transition-all duration-200';
+  li.className = 'p-2 border-b border-gray-200 transition-all duration-200 cursor-pointer hover:bg-gray-600 ease-in-out';
 
   // Create a item
   const checkbox = document.createElement('input');
   checkbox.type = 'checkbox';
-  checkbox.className = 'mr-2'; 
+  checkbox.className = 'mr-2 cursor-pointer'; 
   const label = document.createElement('label');
-  label.className = 'flex items-center'; 
+  label.className = 'flex items-center cursor-pointer'; 
   const textNode = document.createTextNode(todoText);
   label.appendChild(checkbox);
   label.appendChild(textNode);
